@@ -131,11 +131,11 @@ exports.getAllOrders = async (req, res) => {
       order.status = status;
       await order.save();
   
-      res.json({ message: "Order status updated", order });
-    } catch (error) {
+      res.json({ message: "Order status updated",  });
+    } catch (error) {order
       console.error("Error updating order status:", error);
       res.status(500).json({ error: "Internal Server Error" });
-    }
+    } 
   };
   
   // ✅ Delete an order

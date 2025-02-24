@@ -15,7 +15,7 @@ router.get("/user/:userId", orderController.getOrdersByUser);
 router.post("/", orderController.createOrder);
 
 // ✅ Update order status
-router.put("/:id/status", orderController.updateOrderStatus);
+router.put("/:id", orderController.updateOrderStatus);
 
 // ✅ Delete an order
 router.delete("/:id", orderController.deleteOrder);
