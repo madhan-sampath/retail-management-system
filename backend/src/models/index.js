@@ -1,14 +1,17 @@
+const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+
 const Role = require("./Role");
 const Product = require("./Product");
-const User = require("./user");
+const User = require("./User");
 const Inventory = require("./Inventory");
-const Order = require("./order");
-const OrderItem = require("./orderItem");
+const Order = require("./Order");
+const OrderItem = require("./OrderItem");
 const Category = require("./Category");
 const Supplier = require("./Supplier");
 const Customer = require("./Customer");
 const Payment = require("./Payment");
+const Report = require("./Report")(sequelize, DataTypes);
 
 // ✅ Define Role-User Relationship
 Role.hasMany(User, { foreignKey: "role_id" });
@@ -31,4 +34,17 @@ sequelize.sync()
   .then(() => console.log("✅ Database synchronized!"))
   .catch((err) => console.error("❌ Sequelize sync error:", err));
 
-module.exports = { sequelize, User, Role, Product, Inventory, Order, OrderItem, Category, Supplier, Customer, Payment};
+module.exports = {
+  sequelize,
+  User,
+  Role,
+  Product,
+  Inventory,
+  Order,
+  OrderItem,
+  Category,
+  Supplier,
+  Customer,
+  Payment,
+  Report,
+};

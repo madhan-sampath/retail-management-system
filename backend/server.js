@@ -3,6 +3,7 @@ const cors = require("cors");
 require("dotenv").config();
 const sequelize = require("./src/config/database");
 
+
 // ✅ Import Routes
 const categoryRoutes = require("./src/routes/category.routes");
 const authRoutes = require("./src/routes/auth.routes");
@@ -11,6 +12,8 @@ const roleRoutes = require("./src/routes/role.routes");
 const productRoutes = require("./src/routes/product.routes");
 const orderRoutes = require("./src/routes/order.routes");
 const inventoryRoutes = require("./src/routes/inventory.routes");
+const reportRoutes = require("./src/routes/report.routes")
+
 
 require("./src/models"); // ✅ Ensures all models and associations are loaded
 
@@ -27,10 +30,14 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/inventory", inventoryRoutes);
+app.use("api/reports", reportRoutes)
+
+
 app.use("/api/suppliers", require("./src/routes/supplier.routes"));
 app.use("/api/customers", require("./src/routes/customer.routes"));
 app.use("/api/payments", require("./src/routes/payment.routes"));
 app.use("/api/audit", require("./src/routes/auditLog.routes"));
+
 
 const orderItemRoutes = require("./src/routes/orderItem.routes");
 app.use("/api/order-items", orderItemRoutes);
