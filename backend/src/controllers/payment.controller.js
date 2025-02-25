@@ -1,5 +1,5 @@
 const Payment = require("../models/Payment");
-const Order = require("../models/order");
+const Order = require("../models/Order");
 
 // ✅ Get all payments
 exports.getAllPayments = async (req, res) => {
