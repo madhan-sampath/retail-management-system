@@ -1,9 +1,6 @@
-const { Sequelize, DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
-
+const User = require("./User");
 const Role = require("./Role");
 const Product = require("./Product");
-const User = require("./User");
 const Inventory = require("./Inventory");
 const Order = require("./Order");
 const OrderItem = require("./OrderItem");
@@ -11,40 +8,36 @@ const Category = require("./Category");
 const Supplier = require("./Supplier");
 const Customer = require("./Customer");
 const Payment = require("./Payment");
-const Report = require("./Report")(sequelize, DataTypes);
+const Report = require("./Report");
+const AuditLog = require("./AuditLog");
 
-// ✅ Define Role-User Relationship
-Role.hasMany(User, { foreignKey: "role_id" });
-User.belongsTo(Role, { foreignKey: "role_id" });
+// Initialize models
+const userModel = new User();
+const roleModel = new Role();
+const productModel = new Product();
+const inventoryModel = new Inventory();
+const orderModel = new Order();
+const orderItemModel = new OrderItem();
+const categoryModel = new Category();
+const supplierModel = new Supplier();
+const customerModel = new Customer();
+const paymentModel = new Payment();
+const reportModel = new Report();
+const auditLogModel = new AuditLog();
 
-// ✅ Define Product-Inventory Relationship
-Product.hasOne(Inventory, { foreignKey: "product_id", onDelete: "CASCADE" });
-Inventory.belongsTo(Product, { foreignKey: "product_id" });
-
-// ✅ Define Order and OrderItem Relationship
-Order.hasMany(OrderItem, { foreignKey: "order_id", onDelete: "CASCADE" });
-OrderItem.belongsTo(Order, { foreignKey: "order_id" });
-
-// ✅ Define OrderItem-Product Relationship
-Product.hasMany(OrderItem, { foreignKey: "product_id" });
-OrderItem.belongsTo(Product, { foreignKey: "product_id" });
-
-// ✅ Sync Database
-sequelize.sync()
-  .then(() => console.log("✅ Database synchronized!"))
-  .catch((err) => console.error("❌ Sequelize sync error:", err));
+console.log("✅ Local storage models initialized!");
 
 module.exports = {
-  sequelize,
-  User,
-  Role,
-  Product,
-  Inventory,
-  Order,
-  OrderItem,
-  Category,
-  Supplier,
-  Customer,
-  Payment,
-  Report,
+  User: userModel,
+  Role: roleModel,
+  Product: productModel,
+  Inventory: inventoryModel,
+  Order: orderModel,
+  OrderItem: orderItemModel,
+  Category: categoryModel,
+  Supplier: supplierModel,
+  Customer: customerModel,
+  Payment: paymentModel,
+  Report: reportModel,
+  AuditLog: auditLogModel,
 };

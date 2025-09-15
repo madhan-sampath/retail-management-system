@@ -1,6 +1,4 @@
-const OrderItem = require("../models");
-const Order = require("../models/Order");
-const { Product } = require("../models");
+const { OrderItem, Order, Product } = require("../models");
 
 // 📌 Create a new order item
 exports.createOrderItem = async (req, res) => {
@@ -64,8 +62,9 @@ exports.updateOrderItem = async (req, res) => {
         const orderItem = await OrderItem.findByPk(id);
         if (!orderItem) return res.status(404).json({ message: "Order item not found" });
 
-        await orderItem.update({ quantity, unit_price });
-        res.json(orderItem);
+        await OrderItem.update({ quantity, unit_price }, { where: { item_id: id } });
+        const updatedOrderItem = await OrderItem.findByPk(id);
+        res.json(updatedOrderItem);
     } catch (error) {
         res.status(500).json({ message: "Error updating order item", error: error.message });
     }
@@ -78,7 +77,7 @@ exports.deleteOrderItem = async (req, res) => {
         const orderItem = await OrderItem.findByPk(id);
         if (!orderItem) return res.status(404).json({ message: "Order item not found" });
 
-        await orderItem.destroy();
+        await OrderItem.destroy({ where: { item_id: id } });
         res.json({ message: "Order item deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: "Error deleting order item", error: error.message });

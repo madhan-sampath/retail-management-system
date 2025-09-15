@@ -3,10 +3,15 @@ const { User } = require("../models");
 // ✅ Get all users
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll({
-      attributes: ['user_id', 'username', 'email', 'role_id']
-    });
-    res.json(users);
+    const users = await User.findAll();
+    // Filter out password_hash for security
+    const safeUsers = users.map(user => ({
+      user_id: user.user_id,
+      username: user.username,
+      email: user.email,
+      role_id: user.role_id
+    }));
+    res.json(safeUsers);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -26,11 +31,17 @@ exports.createUser = async (req, res) => {
 // ✅ Get user by ID
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id, {
-      attributes: ['user_id', 'username', 'email', 'role_id']
-    });
+    const user = await User.findByPk(req.params.id);
     if (!user) return res.status(404).json({ message: "User not found" });
-    res.json(user);
+    
+    // Filter out password_hash for security
+    const safeUser = {
+      user_id: user.user_id,
+      username: user.username,
+      email: user.email,
+      role_id: user.role_id
+    };
+    res.json(safeUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -43,7 +54,7 @@ exports.updateUser = async (req, res) => {
     const user = await User.findByPk(req.params.id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    await user.update({ username, email, role_id });
+    await User.update({ username, email, role_id }, { where: { user_id: req.params.id } });
     res.json({ message: "User updated successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -56,7 +67,7 @@ exports.deleteUser = async (req, res) => {
     const user = await User.findByPk(req.params.id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    await user.destroy();
+    await User.destroy({ where: { user_id: req.params.id } });
     res.json({ message: "User deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -1,0 +1,16 @@
+[
+  {
+    "category_id": 1,
+    "name": "Electronics",
+    "description": "Electronic devices and accessories",
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "category_id": 2,
+    "name": "Clothing",
+    "description": "Apparel and fashion items",
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  }
+]

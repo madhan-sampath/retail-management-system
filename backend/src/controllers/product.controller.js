@@ -1,5 +1,5 @@
-const { Op } = require("sequelize");
-const { Product } = require("../models");
+const { Product, OrderItem } = require("../models");
+const localStorage = require("../utils/localStorage");
 
 // Get all products
 exports.getAllProducts = async (req, res) => {
@@ -63,7 +63,7 @@ exports.getProductsByPriceRange = async (req, res) => {
   try {
     const { min, max } = req.query;
     const products = await Product.findAll({
-      where: { price: { [Op.between]: [min || 0, max || Number.MAX_VALUE] } }
+      where: { price: { [localStorage.Op.between]: [min || 0, max || Number.MAX_VALUE] } }
     });
     res.json(products);
   } catch (error) {
@@ -75,7 +75,7 @@ exports.getProductsByPriceRange = async (req, res) => {
 exports.getLowStockProducts = async (req, res) => {
   try {
     const products = await Product.findAll({
-      where: { stock_quantity: { [Op.lt]: 5 } },
+      where: { stock_quantity: { [localStorage.Op.lt]: 5 } },
       order: [["stock_quantity", "ASC"]]
     });
     res.json(products);
@@ -90,10 +90,10 @@ exports.searchProducts = async (req, res) => {
     const { query } = req.query;
     const products = await Product.findAll({
       where: {
-        [Op.or]: [
-          { name: { [Op.iLike]: `%${query}%` } },
-          { product_id: { [Op.eq]: query } },
-          { stock_quantity: { [Op.eq]: query } }
+        [localStorage.Op.or]: [
+          { name: { [localStorage.Op.iLike]: `%${query}%` } },
+          { product_id: { [localStorage.Op.eq]: query } },
+          { stock_quantity: { [localStorage.Op.eq]: query } }
         ]
       }
     });
@@ -106,16 +106,27 @@ exports.searchProducts = async (req, res) => {
 // Get top-selling products
 exports.getTopSellingProducts = async (req, res) => {
   try {
-    const topSelling = await OrderItem.findAll({
-      attributes: ["product_id", [sequelize.fn("SUM", sequelize.col("quantity")), "totalSold"]],
-      group: ["product_id"],
-      order: [[sequelize.literal("totalSold"), "DESC"]],
-      limit: 5
+    const orderItems = await OrderItem.findAll();
+    
+    // Group by product_id and sum quantities
+    const productSales = {};
+    orderItems.forEach(item => {
+      if (productSales[item.product_id]) {
+        productSales[item.product_id] += item.quantity;
+      } else {
+        productSales[item.product_id] = item.quantity;
+      }
     });
+
+    // Sort by total sold and get top 5
+    const topSelling = Object.entries(productSales)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 5)
+      .map(([product_id]) => ({ product_id: parseInt(product_id) }));
 
     const productIds = topSelling.map((item) => item.product_id);
     const products = await Product.findAll({
-      where: { product_id: { [Op.in]: productIds } }
+      where: { product_id: { [localStorage.Op.in]: productIds } }
     });
 
     res.json(products);

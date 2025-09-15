@@ -1,27 +1,9 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
+const LocalModel = require("./LocalModel");
 
-const Category = sequelize.define(
-  "Category",
-  {
-    category_id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-  },
-  {
-    tableName: "Categories",
-    timestamps: false,
+class Category extends LocalModel {
+  constructor() {
+    super("Categories", "category_id");
   }
-);
+}
 
 module.exports = Category;

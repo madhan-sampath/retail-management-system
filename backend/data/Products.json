@@ -1,0 +1,24 @@
+[
+  {
+    "product_id": 1,
+    "name": "Laptop",
+    "description": "High-performance laptop",
+    "category_id": 1,
+    "price": 999.99,
+    "stock_quantity": 10,
+    "image_url": "https://example.com/laptop.jpg",
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "product_id": 2,
+    "name": "T-Shirt",
+    "description": "Cotton t-shirt",
+    "category_id": 2,
+    "price": 19.99,
+    "stock_quantity": 50,
+    "image_url": "https://example.com/tshirt.jpg",
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  }
+]

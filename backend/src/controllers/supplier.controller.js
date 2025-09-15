@@ -1,4 +1,4 @@
-const Supplier = require("../models/Supplier");
+const { Supplier } = require("../models");
 
 // ✅ Get all suppliers
 exports.getAllSuppliers = async (req, res) => {
@@ -40,13 +40,12 @@ exports.updateSupplier = async (req, res) => {
 
     if (!supplier) return res.status(404).json({ message: "Supplier not found" });
 
-    supplier.name = name;
-    supplier.contact_info = contact_info;
-    supplier.address = address;
-    supplier.updated_at = new Date();
-
-    await supplier.save();
-    res.json({ message: "Supplier updated successfully", supplier });
+    await Supplier.update(
+      { name, contact_info, address, updated_at: new Date() },
+      { where: { supplier_id: req.params.id } }
+    );
+    const updatedSupplier = await Supplier.findByPk(req.params.id);
+    res.json({ message: "Supplier updated successfully", supplier: updatedSupplier });
   } catch (error) {
     res.status(500).json({ message: "Error updating supplier", error });
   }
@@ -58,7 +57,7 @@ exports.deleteSupplier = async (req, res) => {
     const supplier = await Supplier.findByPk(req.params.id);
     if (!supplier) return res.status(404).json({ message: "Supplier not found" });
 
-    await supplier.destroy();
+    await Supplier.destroy({ where: { supplier_id: req.params.id } });
     res.json({ message: "Supplier deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting supplier", error });

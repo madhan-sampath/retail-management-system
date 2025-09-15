@@ -1,4 +1,4 @@
-const Role = require("../models/Role");
+const { Role } = require("../models");
 
 // ✅ Get all roles
 exports.getAllRoles = async (req, res) => {
@@ -39,7 +39,7 @@ exports.updateRole = async (req, res) => {
     const role = await Role.findByPk(req.params.id);
     if (!role) return res.status(404).json({ message: "Role not found" });
 
-    await role.update({ role_name, description });
+    await Role.update({ role_name, description }, { where: { role_id: req.params.id } });
     res.json({ message: "Role updated successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -52,7 +52,7 @@ exports.deleteRole = async (req, res) => {
     const role = await Role.findByPk(req.params.id);
     if (!role) return res.status(404).json({ message: "Role not found" });
 
-    await role.destroy();
+    await Role.destroy({ where: { role_id: req.params.id } });
     res.json({ message: "Role deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });

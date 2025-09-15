@@ -1,6 +1,4 @@
-// src/controllers/report.controller.js
-const db = require('../models');
-const Report = db.Report;
+const { Report } = require('../models');
 
 exports.getAllReports = async (req, res) => {
   try {
@@ -37,8 +35,9 @@ exports.updateReport = async (req, res) => {
   try {
     const report = await Report.findByPk(req.params.id);
     if (report) {
-      await report.update(req.body);
-      res.json(report);
+      await Report.update(req.body, { where: { id: req.params.id } });
+      const updatedReport = await Report.findByPk(req.params.id);
+      res.json(updatedReport);
     } else {
       res.status(404).json({ message: 'Report not found' });
     }
@@ -51,7 +50,7 @@ exports.deleteReport = async (req, res) => {
   try {
     const report = await Report.findByPk(req.params.id);
     if (report) {
-      await report.destroy();
+      await Report.destroy({ where: { id: req.params.id } });
       res.status(204).send();
     } else {
       res.status(404).json({ message: 'Report not found' });

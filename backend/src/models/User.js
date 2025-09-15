@@ -1,15 +1,9 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
+const LocalModel = require("./LocalModel");
 
-const User = sequelize.define("User", {
-  user_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  username: { type: DataTypes.STRING, allowNull: false, unique: true },
-  password_hash: { type: DataTypes.STRING, allowNull: false },
-  email: { type: DataTypes.STRING, allowNull: false, unique: true },
-  role_id: { type: DataTypes.INTEGER, allowNull: false }
-}, {
-  tableName: "Users",
-  timestamps: false
-});
+class User extends LocalModel {
+  constructor() {
+    super("Users", "user_id");
+  }
+}
 
 module.exports = User;

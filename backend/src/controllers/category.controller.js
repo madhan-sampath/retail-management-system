@@ -1,4 +1,4 @@
-const Category = require("../models/Category");
+const { Category } = require("../models");
 
 // ✅ Get all categories
 exports.getAllCategories = async (req, res) => {
@@ -43,11 +43,9 @@ exports.updateCategory = async (req, res) => {
 
     if (!category) return res.status(404).json({ message: "Category not found" });
 
-    category.name = name;
-    category.description = description;
-    await category.save();
-
-    res.json({ message: "Category updated successfully", category });
+    await Category.update({ name, description }, { where: { category_id: req.params.id } });
+    const updatedCategory = await Category.findByPk(req.params.id);
+    res.json({ message: "Category updated successfully", category: updatedCategory });
   } catch (error) {
     res.status(500).json({ message: "Error updating category", error });
   }
@@ -59,7 +57,7 @@ exports.deleteCategory = async (req, res) => {
     const category = await Category.findByPk(req.params.id);
     if (!category) return res.status(404).json({ message: "Category not found" });
 
-    await category.destroy();
+    await Category.destroy({ where: { category_id: req.params.id } });
     res.json({ message: "Category deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting category", error });

@@ -1,13 +1,9 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
+const LocalModel = require("./LocalModel");
 
-const Role = sequelize.define("Role", {
-  role_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  role_name: { type: DataTypes.STRING, allowNull: false, unique: true },
-  description: { type: DataTypes.STRING }
-}, {
-  tableName: "Roles",
-  timestamps: false
-});
+class Role extends LocalModel {
+  constructor() {
+    super("Roles", "role_id");
+  }
+}
 
 module.exports = Role;

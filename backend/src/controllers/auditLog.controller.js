@@ -1,10 +1,14 @@
-const { User } = require("../models");
-const AuditLog = require("../models/AuditLog");
+const { User, AuditLog } = require("../models");
 
 // ✅ Get all audit logs
 exports.getAllAuditLogs = async (req, res) => {
   try {
-    const logs = await AuditLog.findAll({ include: User });
+    const logs = await AuditLog.findAll();
+    // Get user details for each log
+    for (let log of logs) {
+      const user = await User.findByPk(log.user_id);
+      log.user = user;
+    }
     res.json(logs);
   } catch (error) {
     res.status(500).json({ message: "Error fetching audit logs", error });
@@ -14,8 +18,13 @@ exports.getAllAuditLogs = async (req, res) => {
 // ✅ Get a single audit log by ID
 exports.getAuditLogById = async (req, res) => {
   try {
-    const log = await AuditLog.findByPk(req.params.id, { include: User });
+    const log = await AuditLog.findByPk(req.params.id);
     if (!log) return res.status(404).json({ message: "Audit log not found" });
+    
+    // Get user details
+    const user = await User.findByPk(log.user_id);
+    log.user = user;
+    
     res.json(log);
   } catch (error) {
     res.status(500).json({ message: "Error fetching audit log", error });
@@ -45,7 +54,7 @@ exports.deleteAuditLog = async (req, res) => {
     const log = await AuditLog.findByPk(req.params.id);
     if (!log) return res.status(404).json({ message: "Audit log not found" });
 
-    await log.destroy();
+    await AuditLog.destroy({ where: { log_id: req.params.id } });
     res.json({ message: "Audit log deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting audit log", error });

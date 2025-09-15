@@ -1,18 +1,9 @@
-// src/models/Report.js
-module.exports = (sequelize, DataTypes) => {
-  const Report = sequelize.define('Report', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  }, {
-    timestamps: true,
-  });
+const LocalModel = require("./LocalModel");
 
-  return Report;
-};
+class Report extends LocalModel {
+  constructor() {
+    super("Reports", "id");
+  }
+}
+
+module.exports = Report;

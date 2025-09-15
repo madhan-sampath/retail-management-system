@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const sequelize = require("./src/config/database");
 
 
 // ✅ Import Routes
@@ -15,7 +14,7 @@ const inventoryRoutes = require("./src/routes/inventory.routes");
 const reportRoutes = require("./src/routes/report.routes")
 
 
-require("./src/models"); // ✅ Ensures all models and associations are loaded
+require("./src/models"); // ✅ Ensures all local storage models are loaded
 
 const app = express(); // ✅ Initialize Express app
 
@@ -49,11 +48,7 @@ app.use("/api/order-items", orderItemRoutes);
 
 
 
-// ✅ Sync Database
-sequelize
-  .sync()
-  .then(() => console.log("✅ Database synchronized!"))
-  .catch((err) => console.error("❌ Sequelize sync error:", err));
+// ✅ Local storage is ready - no database sync needed
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;

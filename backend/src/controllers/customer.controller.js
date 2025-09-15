@@ -1,4 +1,4 @@
-const Customer = require("../models/Customer");
+const { Customer } = require("../models");
 
 // ✅ Get all customers
 exports.getAllCustomers = async (req, res) => {
@@ -15,7 +15,7 @@ exports.getCustomerById = async (req, res) => {
   try {
     const customer = await Customer.findByPk(req.params.id);
     if (!customer) return res.status(404).json({ message: "Customer not found" });
-    res.json(customer);
+    res.json(customer);y
   } catch (error) {
     res.status(500).json({ message: "Error fetching customer", error });
   }
@@ -40,14 +40,12 @@ exports.updateCustomer = async (req, res) => {
 
     if (!customer) return res.status(404).json({ message: "Customer not found" });
 
-    customer.name = name;
-    customer.email = email;
-    customer.phone = phone;
-    customer.address = address;
-    customer.updated_at = new Date();
-
-    await customer.save();
-    res.json({ message: "Customer updated successfully", customer });
+    await Customer.update(
+      { name, email, phone, address, updated_at: new Date() },
+      { where: { customer_id: req.params.id } }
+    );
+    const updatedCustomer = await Customer.findByPk(req.params.id);
+    res.json({ message: "Customer updated successfully", customer: updatedCustomer });
   } catch (error) {
     res.status(500).json({ message: "Error updating customer", error });
   }
@@ -59,7 +57,7 @@ exports.deleteCustomer = async (req, res) => {
     const customer = await Customer.findByPk(req.params.id);
     if (!customer) return res.status(404).json({ message: "Customer not found" });
 
-    await customer.destroy();
+    await Customer.destroy({ where: { customer_id: req.params.id } });
     res.json({ message: "Customer deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting customer", error });
