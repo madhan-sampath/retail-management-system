@@ -1,0 +1,34 @@
+{
+  "name": "retail-management-system",
+  "version": "1.0.0",
+  "description": "Complete Retail Management System with Angular Frontend and Node.js Backend",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend-new && npm install",
+    "start:backend": "cd backend && npm run dev",
+    "start:frontend": "cd frontend-new && npm start",
+    "start:all": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "build:frontend": "cd frontend-new && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "test:frontend": "cd frontend-new && npm test",
+    "test:backend": "cd backend && npm test",
+    "lint:frontend": "cd frontend-new && npm run lint",
+    "lint:backend": "cd backend && npm run lint"
+  },
+  "keywords": [
+    "retail",
+    "management",
+    "angular",
+    "nodejs",
+    "express",
+    "typescript"
+  ],
+  "author": "Retail Management Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "backend",
+    "frontend-new"
+  ]
+}

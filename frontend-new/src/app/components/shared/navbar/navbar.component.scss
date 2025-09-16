@@ -1,0 +1,45 @@
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  .navbar-brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    
+    i {
+      color: #ffc107;
+    }
+  }
+  
+  .nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: #ffc107 !important;
+    }
+    
+    &.active {
+      color: #ffc107 !important;
+    }
+  }
+  
+  .dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    
+    .dropdown-item {
+      padding: 0.5rem 1rem;
+      transition: background-color 0.3s ease;
+      
+      &:hover {
+        background-color: #f8f9fa;
+      }
+      
+      i {
+        width: 16px;
+        text-align: center;
+      }
+    }
+  }
+}
