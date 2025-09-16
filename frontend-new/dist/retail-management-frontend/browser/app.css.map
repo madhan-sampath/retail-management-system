@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/app.scss"],
+  "sourcesContent": [".app-container {\r\n  display: flex;\r\n  min-height: 100vh;\r\n}\r\n\r\n.main-content {\r\n  flex: 1;\r\n  margin-left: 250px;\r\n  transition: margin-left 0.3s ease;\r\n  min-height: 100vh;\r\n  display: flex;\r\n  flex-direction: column;\r\n  position: relative;\r\n  z-index: 1;\r\n}\r\n\r\n.content {\r\n  flex: 1;\r\n  padding: 2rem;\r\n  background-color: #f8f9fa;\r\n}\r\n\r\n/* Responsive Design */\r\n@media (max-width: 768px) {\r\n  .main-content {\r\n    margin-left: 60px;\r\n  }\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,WAAA;AACA,cAAA;;AAGF,CAAA;AACE,QAAA;AACA,eAAA;AACA,cAAA,YAAA,KAAA;AACA,cAAA;AACA,WAAA;AACA,kBAAA;AACA,YAAA;AACA,WAAA;;AAGF,CAAA;AACE,QAAA;AACA,WAAA;AACA,oBAAA;;AAIF,OAAA,CAAA,SAAA,EAAA;AACE,GAnBF;AAoBI,iBAAA;;;",
+  "names": []
+}
